@@ -20,52 +20,46 @@ namespace Homework_3_2
             Console.WriteLine("Losujemy liczbę...");
             var rnd = new Random();
             var drawnNumber = rnd.Next(lowerLimit, upperLimit);
-            int yourNumber;
 
             Console.WriteLine(drawnNumber);
 
-            var i = 1;
+            var i = 0;
             while (true)
             {
                 Console.Write("Podaj liczbę: ");
-                var flag = false;
-                try
-                {
-                    yourNumber = int.Parse(Console.ReadLine());
-                }
-                catch(FormatException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    flag = true;
-                    throw ex;
-                }
-                finally
-                {
-                    if(flag)
-                        Console.WriteLine("Coś się zepsuło!");
-                }
 
-                Console.WriteLine();
-
-                if (yourNumber < drawnNumber && yourNumber >= lowerLimit )
-                {
-                    Console.WriteLine("Podana liczba jest za mała.");
-                }
-                else if (yourNumber > drawnNumber && yourNumber <= upperLimit)
-                {
-                    Console.WriteLine("Podana liczba jest za duża.");
-                }
-                else if (drawnNumber == yourNumber)
-                {
-                    Console.WriteLine($"Brawo! Udało Ci się trafić w {i} próbach.");
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Podaj liczbę z właściwego zakresu.");
-                }
+                var yourNumber = GetNumber(lowerLimit, upperLimit);
 
                 i++;
+
+                if (yourNumber < drawnNumber)
+                {
+                    Console.WriteLine("Podana liczba jest za mała.");
+                    continue;
+                }
+                if (yourNumber > drawnNumber)
+                {
+                    Console.WriteLine("Podana liczba jest za duża.");
+                    continue;
+                }
+
+                Console.WriteLine($"Brawo! Udało Ci się trafić w {i} próbach.");
+                break;
+            }
+        }
+
+        private static int GetNumber(int lowerLimit, int upperLimit)
+        {
+            while (true)
+            {
+
+                if (!int.TryParse(Console.ReadLine(), out int number) || number < lowerLimit || number > upperLimit)
+                {
+                    Console.WriteLine("Wpisałeś nieprawidłowe dane, spróbuj ponownie.");
+                    continue;
+                }
+
+                return number;
             }
         }
     }
